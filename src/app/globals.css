@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+:root {
+  --background: #edf2f7;
+  --foreground: #0f172a;
+  --panel: rgba(255, 255, 255, 0.82);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-plex-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 30%),
+    radial-gradient(circle at 88% 12%, rgba(251, 191, 36, 0.14), transparent 26%),
+    linear-gradient(180deg, #f8fafc 0%, #eef2ff 45%, #eef6ff 100%);
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 28%),
+    radial-gradient(circle at 90% 15%, rgba(245, 158, 11, 0.1), transparent 25%),
+    linear-gradient(180deg, #f8fafc 0%, #edf2ff 100%);
+  color: var(--foreground);
+  font-family: var(--font-space-grotesk), "Segoe UI", Arial, sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(15, 23, 42, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.025) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 90%);
+  opacity: 0.55;
+}
+
+::selection {
+  background: rgba(8, 145, 178, 0.2);
+  color: #0f172a;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
