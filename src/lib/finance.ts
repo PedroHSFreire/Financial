@@ -84,6 +84,19 @@ export interface MonthlySummary {
 
 export const STORAGE_KEY = "finance-manager:v1";
 
+export const DEFAULT_CATEGORIES = [
+  "Moradia",
+  "Alimentação",
+  "Transporte",
+  "Saúde",
+  "Educação",
+  "Assinaturas",
+  "Lazer",
+  "Trabalho",
+  "Impostos",
+  "Outros",
+] as const;
+
 const currencyFormatter = new Intl.NumberFormat("pt-BR", {
   style: "currency",
   currency: "BRL",
@@ -420,10 +433,13 @@ function getEntryPaymentStatus(entry: MonthlyEntry, currentDate: Date) {
   const currentMonth = getMonthKey(currentDate);
   const entryMonth = entry.month;
 
-  return !entry.paid && (
-    monthDifference(entryMonth, currentMonth) > 0 ||
-    (entryMonth === currentMonth && currentDate > entryDate) ||
-    monthDifference(entryMonth, currentMonth) < 0
+  // Apenas meses passados ou uma data de vencimento já ultrapassada no mês atual
+  // podem ficar atrasados. Meses futuros continuam pendentes, mesmo que a despesa
+  // seja recorrente e já apareça antecipadamente na lista.
+  return (
+    !entry.paid &&
+    (monthDifference(entryMonth, currentMonth) > 0 ||
+      (entryMonth === currentMonth && currentDate > entryDate))
   );
 }
 
@@ -562,7 +578,9 @@ export function getExpenseCategories(state: FinanceState, scope: ScopeKey) {
   const categories = new Set<string>();
 
   for (const expense of state.scopes[scope].expenses) {
-    categories.add(expense.category);
+    if (expense.category.trim()) {
+      categories.add(expense.category.trim());
+    }
   }
 
   return Array.from(categories).sort((left, right) => left.localeCompare(right, "pt-BR"));
